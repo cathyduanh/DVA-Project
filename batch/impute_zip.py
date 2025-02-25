@@ -7,7 +7,7 @@ import numpy as np
 # IMPORT DATA
 ###########################
 df = pd.read_csv("data/Motor_Vehicle_Collisions_-_Crashes.csv")
-df = df.head(20)
+# df = df.head(20)
 # Replace column name spaces with underscore
 df.columns = df.columns.str.replace(" ", "_")
 df_null_zip = pd.read_csv("data/imputed_zip.csv")
