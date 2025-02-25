@@ -30,10 +30,13 @@ df_null_zip["LAT_LON"] = (
 # REVERSE ZIP CODE LOOKUP
 ############################
 geolocator = Nominatim(user_agent="reverse_geocoding")
-reverse_geocode = RateLimiter(geolocator.reverse, min_delay_seconds=1)
+reverse_geocode = RateLimiter(geolocator.reverse, min_delay_seconds=2)
 
 # Keep lookup in memory to reduce API calls
-reverse_dict = {}
+imputed = pd.read_csv("data/cache/imputed_zip.csv")
+reverse_dict = dict(zip(imputed["LOCATION"], imputed["ZIP_CODE_IMPUTED"]))
+coords = []
+zips = []
 
 
 # Helper function
@@ -42,6 +45,11 @@ def impute(coord):
         if reverse_geocode(coord):
             zip = reverse_geocode(coord).raw["address"].get("postcode")
             reverse_dict[coord] = zip
+            coords.append(coord)
+            zips.append(zip)
+            pd.DataFrame({"LOCATION": coords, "ZIP_CODE_IMPUTED": zips}).to_csv(
+                "data/cache/imputed_zip.csv", index=False
+            )
             return zip
         else:
             return None
