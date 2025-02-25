@@ -32,7 +32,7 @@ df_null_zip["LAT_LON"] = (
 geolocator = Nominatim(user_agent="reverse_geocoding")
 reverse_geocode = RateLimiter(geolocator.reverse, min_delay_seconds=1)
 
-# Keep known looksup in memory to reduce API calls
+# Keep lookup in memory to reduce API calls
 reverse_dict = {}
 
 
