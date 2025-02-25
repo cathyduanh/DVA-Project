@@ -34,7 +34,7 @@ reverse_geocode = RateLimiter(geolocator.reverse, min_delay_seconds=1)
 
 # Keep lookup in memory to reduce API calls
 imputed = pd.read_csv("data/cache/imputed_zip.csv")
-reverse_dict = dict(zip(imputed["LOCATION"], imputed["ZIP_CODE_IMPUTED"]))
+reverse_dict = dict(zip(imputed["LAT_LON"], imputed["ZIP_CODE_IMPUTED"]))
 
 
 # Helper function
@@ -44,7 +44,7 @@ def impute(coord):
             zip = reverse_geocode(coord).raw["address"].get("postcode")
             reverse_dict[coord] = zip
             pd.DataFrame(
-                reverse_dict.items(), columns=["LOCATION", "ZIP_CODE_IMPUTED"]
+                reverse_dict.items(), columns=["LAT_LON", "ZIP_CODE_IMPUTED"]
             ).to_csv("data/cache/imputed_zip.csv", index=False)
             return zip
         else:
