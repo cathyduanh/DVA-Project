@@ -39,7 +39,6 @@ reverse_dict = {}
 # Helper function
 def impute(coord):
     if not reverse_dict.get(coord):
-        print("calling API")
         if reverse_geocode(coord):
             zip = reverse_geocode(coord).raw["address"].get("postcode")
             reverse_dict[coord] = zip
@@ -47,6 +46,7 @@ def impute(coord):
         else:
             return None
     else:
+        print(f"{coord}:{reverse_dict[coord]} exists")
         return reverse_dict[coord]
 
 
