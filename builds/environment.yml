@@ -142,4 +142,3 @@ dependencies:
     - pgeocode==0.5.0
     - pytz==2025.1
     - tzdata==2025.1
-prefix: D:\Users\mjvuo\miniconda3\envs\dva
