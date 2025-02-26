@@ -17,7 +17,7 @@ def munge_df(df):
     -------
     DataFrame
         With new columns `LATITUDE_WEATHER_STATION`, `LONGITUDE_WEATHER_STATION`,
-        `DISTANCE_FROM_WEATHER_STATION`, and `ZIP_CODE_IMPUTED`.
+        `DISTANCE_FROM_WEATHER_STATION`, `ZIP_CODE_IMPUTED`, and `BOROUGH_IMPUTED.
     """
     # Replace column name spaces with underscore
     df.columns = df.columns.str.replace(" ", "_")
@@ -32,12 +32,16 @@ def munge_df(df):
         validate="m:1",
     )
 
-    df_null_zip = pd.read_csv("data/imputed_zip.csv")
+    df_null_zip = pd.read_csv("data/imputed_zip.csv", dtype={"ZIP_CODE_IMPUTED": "str"})
 
     df = df.merge(df_null_zip, on=["LATITUDE", "LONGITUDE"], how="left", validate="m:1")
 
+    # Impute zip codes
     df["ZIP_CODE"] = np.where(
         df["ZIP_CODE"].isnull(), df["ZIP_CODE_IMPUTED"], df["ZIP_CODE"]
     )
+
+    # Clean up zip codes
+    df["ZIP_CODE"] = df["ZIP_CODE"].str.replace(" ", "")
 
     return df
