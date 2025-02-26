@@ -14,16 +14,17 @@ df = pd.read_csv("data/Motor_Vehicle_Collisions_-_Crashes.csv")
 # Replace column name spaces with underscore
 df.columns = df.columns.str.replace(" ", "_")
 
+df = df[["LOCATION", "ZIP_CODE"]]
+
 # Filter data with known lat/lon but with null zip codes
 df_null_zip = df[
-    (~df[["LATITUDE", "LONGITUDE"]].isnull().all(axis=1)) & (df["ZIP_CODE"].isnull())
+    (~df[["LOCATION"]].isnull().all(axis=1)) & (df["ZIP_CODE"].isnull())
 ].copy()
 
-print(f"There are {df_null_zip.shape[0]} rows with lat/lon and null zip codes")
+# Drop duplicates
+df_null_zip = df_null_zip[~df_null_zip[["LOCATION"]].duplicated()]
 
-df_null_zip["LAT_LON"] = (
-    df_null_zip["LATITUDE"].astype(str) + ", " + df_null_zip["LONGITUDE"].astype(str)
-)
+print(f"There are {df_null_zip.shape[0]} unique lat/lon having null zip codes")
 
 # %%
 ############################
@@ -34,17 +35,18 @@ reverse_geocode = RateLimiter(geolocator.reverse, min_delay_seconds=1)
 
 # Keep lookup in memory to reduce API calls
 imputed = pd.read_csv("data/cache/imputed_zip.csv")
-reverse_dict = dict(zip(imputed["LAT_LON"], imputed["ZIP_CODE_IMPUTED"]))
+reverse_dict = dict(zip(imputed["LOCATION"], imputed["ZIP_CODE_IMPUTED"]))
 
 
 # Helper function
 def impute(coord):
     if not reverse_dict.get(coord):
-        if reverse_geocode(coord):
-            zip = int(reverse_geocode(coord).raw["address"].get("postcode"))
+        geo_result = reverse_geocode(coord.strip("()"))
+        if geo_result:
+            zip = geo_result.raw["address"].get("postcode")
             reverse_dict[coord] = zip
             pd.DataFrame(
-                reverse_dict.items(), columns=["LAT_LON", "ZIP_CODE_IMPUTED"]
+                reverse_dict.items(), columns=["LOCATION", "ZIP_CODE_IMPUTED"]
             ).to_csv("data/cache/imputed_zip.csv", index=False)
             return zip
         else:
@@ -54,12 +56,8 @@ def impute(coord):
         return reverse_dict[coord]
 
 
-df_null_zip["ZIP_CODE_IMPUTED"] = df_null_zip["LAT_LON"].progress_apply(impute)
+df_null_zip["ZIP_CODE_IMPUTED"] = df_null_zip["LOCATION"].progress_apply(impute)
 # %%
-# Drop duplicates
-df_null_zip = df_null_zip[
-    ~df_null_zip[["LATITUDE", "LONGITUDE", "ZIP_CODE_IMPUTED"]].duplicated()
-]
 # Save lookup to csv
 df_null_zip[["LATITUDE", "LONGITUDE", "ZIP_CODE_IMPUTED"]].to_csv(
     "data/imputed_zip.csv", index=False

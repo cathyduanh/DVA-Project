@@ -44,23 +44,9 @@ df_nearest = geopandas.sjoin_nearest(
     lsuffix="ACCIDENT",
     rsuffix="WEATHER_STATION",
 )
-df_neareset = df_nearest.drop(columns=["geometry", "index_WEATHER_STATION"])
+df_nearest = df_nearest.drop(columns=["geometry", "index_WEATHER_STATION"])
 
 # Save mapping to csv
 df_nearest.to_csv("data/weather_station_mapping.csv", index=False)
-# %%
-
-###########################
-# MERGE NEAREST WEATHER STATION
-###########################
-df = pd.read_csv("data/Motor_Vehicle_Collisions_-_Crashes.csv")
-
-df.merge(
-    df_nearest,
-    left_on=["LATITUDE", "LONGITUDE"],
-    right_on=["LATITUDE_ACCIDENT", "LONGITUDE_ACCIDENT"],
-    how="left",
-    validate="m:1",
-)
 
 # %%
