@@ -6,8 +6,9 @@ import pandas as pd
 import glob
 
 # Import data
-df = pd.read_csv("data/Motor_Vehicle_Collisions_-_Crashes.csv")
-
+df = pd.read_csv(
+    "data/Motor_Vehicle_Collisions_-_Crashes.csv", dtype={"ZIP CODE": "str"}
+)
 # Munge data
 df = munge_df(df)
 
