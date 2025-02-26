@@ -3,6 +3,27 @@ Team 169
 NY weather csv data source: climate.gov https://www.climate.gov/maps-data/dataset/past-weather-zip-code-data-table
 NY weather data description: GHCND_documentation.pdf
 
+# Building and using environment
+To create environment, run `conda env create -f builds/environment.yml` at the root directory and then activating it via `conda activate dva`.
+
+Example:
+```bash
+conda env create -f builds/environment.yml
+conda activate dva
+```
+
+If you install a new package, run `conda env export -f builds/environment.yml`
+and then commit this file and push to github (either through the terminal or through an editor) so that others can utilize the same package and version.
+
+Example:
+```bash
+git checkout my_own_branch
+conda env export -f builds/environment.yml
+git add builds/environment.yml
+git commit -m "update conda env"
+git push
+```
+
 # Data Munging 
 You can run either block to get weather station and missing zip codes:
 
