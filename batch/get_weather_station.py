@@ -7,7 +7,9 @@ import pandas as pd
 # IMPORT DATA
 ###########################
 # Get NYC df
-df = pd.read_csv("data/Motor_Vehicle_Collisions_-_Crashes.csv")
+df = pd.read_csv(
+    "data/Motor_Vehicle_Collisions_-_Crashes.csv", dtype={"ZIP CODE": "str"}
+)
 # Replace column name spaces with underscore
 df.columns = df.columns.str.replace(" ", "_")
 # Filter null coordinates
