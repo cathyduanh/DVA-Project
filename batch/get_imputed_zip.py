@@ -57,6 +57,8 @@ def impute(coord):
 df_null_zip["ZIP_CODE_IMPUTED"] = df_null_zip["LAT_LON"].progress_apply(impute)
 # %%
 # Drop duplicates
-df_null_zip = ~df_null_zip[["LATITUDE", "LONGITUDE", "ZIP_CODE_IMPUTED"]].duplicated()
+df_null_zip = df_null_zip[
+    ~df_null_zip[["LATITUDE", "LONGITUDE", "ZIP_CODE_IMPUTED"]].duplicated()
+]
 # Save lookup to csv
 df_null_zip.to_csv("data/imputed_zip.csv", index=False)
