@@ -41,7 +41,7 @@ reverse_dict = dict(zip(imputed["LAT_LON"], imputed["ZIP_CODE_IMPUTED"]))
 def impute(coord):
     if not reverse_dict.get(coord):
         if reverse_geocode(coord):
-            zip = reverse_geocode(coord).raw["address"].get("postcode")
+            zip = int(reverse_geocode(coord).raw["address"].get("postcode"))
             reverse_dict[coord] = zip
             pd.DataFrame(
                 reverse_dict.items(), columns=["LAT_LON", "ZIP_CODE_IMPUTED"]
@@ -61,4 +61,8 @@ df_null_zip = df_null_zip[
     ~df_null_zip[["LATITUDE", "LONGITUDE", "ZIP_CODE_IMPUTED"]].duplicated()
 ]
 # Save lookup to csv
-df_null_zip.to_csv("data/imputed_zip.csv", index=False)
+df_null_zip[["LATITUDE", "LONGITUDE", "ZIP_CODE_IMPUTED"]].to_csv(
+    "data/imputed_zip.csv", index=False
+)
+
+# %%

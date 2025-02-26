@@ -23,7 +23,12 @@ df["CRASH_DATE"] = pd.to_datetime(df.CRASH_DATE).dt.strftime("%Y-%m-%d")
 
 # Merge with weather data using crash date and nearest weather station
 df = df.merge(
-    df_weather, left_on=["CRASH_DATE", "STATION"], right_on=["DATE", "STATION"]
+    df_weather,
+    left_on=["CRASH_DATE", "STATION"],
+    right_on=["DATE", "STATION"],
+    how="left",
+    validate="m:1",
+    suffixes=["_CRASH", "_WEATHER_STATION"],
 )
 # %%
 df
