@@ -4,7 +4,8 @@ NY weather csv data source: climate.gov https://www.climate.gov/maps-data/datase
 NY weather data description: GHCND_documentation.pdf
 
 # Data Munging 
-Run this code block first before the subsequent ones:
+You can run either block to get weather station and missing zip codes:
+
 ## Method 1: Using `munge_df()`
 ```python
 from batch.munge_df import munge_df
