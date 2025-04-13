@@ -13,8 +13,8 @@ NY weather data description: GHCND_documentation.pdf
 - Download the NYC dataset here: 
     
         https://data.cityofnewyork.us/Public-Safety/Motor-Vehicle-Collisions-Crashes/h9gi-nx95/about_data
-        
-- Save the csv under the `data` folder.
+
+- Save `Motor_Vehicle_Collisions_-_Crashes.csv` under the `data` folder.
 
 ## Building and using environment
 To create environment, run `conda env create -f builds/environment.yml` at the root directory and then activating it via `conda activate dva`.
@@ -26,9 +26,10 @@ conda activate dva
 ```
 
 # Execution
-You can create this file with a couple of steps:
+You can run the following to produce the desired files:
 - Run `conda run -n dva python demo.py` to produce `df_demo.csv`
 - Run `data_cleaning.ipynb` to produce `cleaned_data.csv`
 - Run `Vehicle Regroup, Rush_hour, Weekday, Season.ipynb` to produce `cleaned_data_updated.csv`
-- Run something to produce `cleaned_data_final.csv`
 - Run `DVA Model - 20250406.ipynb` to produce `data_with_predictions.csv`
+
+`data_with_predictions.csv` is a munged dataset with the predictions for fatal crashes.
