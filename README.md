@@ -33,3 +33,12 @@ You can run the following to produce the desired files:
 - Run `DVA Model - 20250406.ipynb` to produce `data_with_predictions.csv`
 
 `data_with_predictions.csv` is a munged dataset with the predictions for fatal crashes.
+
+## Visualizations
+The provided interactive heatmaps and choropleths are located in:
+```bash
+Visualization\output\Choropleth_Prediction_Accuracy_By_ZIP.html
+Visualization\output\NYC_Accident_Heatmap_with_Boroughs.html
+Visualization\output\NYC_Accident_Heatmap_with_ZIP.html
+Visualization\output\NYC_Crash_Severity_Choropleth.html
+```
