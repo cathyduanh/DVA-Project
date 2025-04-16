@@ -1,9 +1,22 @@
-# DVA-Project
-Team 169
-NY weather csv data source: climate.gov https://www.climate.gov/maps-data/dataset/past-weather-zip-code-data-table
+# DVA-Project: NYC Collision Analysis Team 169
+# Description (WIP)
+This package reads in the NYC Collision dataset and imputes zipcodes, adds weather information, and creates predictive models with fatal crashes as the target variable.
+
+Weather data source is found here:
+https://www.climate.gov/maps-data/dataset/past-weather-zip-code-data-table
+
+Filename: climate.gov
+
 NY weather data description: GHCND_documentation.pdf
 
-# Building and using environment
+# Installation
+- Download the NYC dataset here: 
+    
+        https://data.cityofnewyork.us/Public-Safety/Motor-Vehicle-Collisions-Crashes/h9gi-nx95/about_data
+
+- Save `Motor_Vehicle_Collisions_-_Crashes.csv` under the `data` folder.
+
+## Building and using environment
 To create environment, run `conda env create -f builds/environment.yml` at the root directory and then activating it via `conda activate dva`.
 
 Example:
@@ -12,63 +25,20 @@ conda env create -f builds/environment.yml
 conda activate dva
 ```
 
-If you install a new package, run `conda env export -f builds/environment.yml`
-and then commit this file and push to github (either through the terminal or through an editor) so that others can utilize the same package and version.
+# Execution
+You can run the following to produce the desired files:
+- Run `conda run -n dva python demo.py` to produce `df_demo.csv`
+- Run `data_cleaning.ipynb` to produce `cleaned_data.csv`
+- Run `Vehicle Regroup, Rush_hour, Weekday, Season.ipynb` to produce `cleaned_data_updated.csv`
+- Run `DVA Model - 20250406.ipynb` to produce `data_with_predictions.csv`
 
-Example:
+`data_with_predictions.csv` is a munged dataset with the predictions for fatal crashes.
+
+## Visualizations
+The provided interactive heatmaps and choropleths are located in:
 ```bash
-git checkout my_own_branch
-conda env export -f builds/environment.yml
-git add builds/environment.yml
-git commit -m "update conda env"
-git push
-```
-
-# Data Munging 
-You can run either code block to get weather station and missing zip codes:
-
-## Method 1: Using `munge_df()`
-```python
-from batch.munge_df import munge_df
-
-import pandas as pd
-
-df = pd.read_csv(
-    "data/Motor_Vehicle_Collisions_-_Crashes.csv", dtype={"ZIP CODE": "str"}
-)
-
-df = munge_df(df)
-```
-
-## Method 2: Manually
-
-```python
-import pandas as pd
-import numpy as np
-
-df = pd.read_csv(
-    "data/Motor_Vehicle_Collisions_-_Crashes.csv", dtype={"ZIP CODE": "str"}
-)
-# Replace column name spaces with underscore
-df.columns = df.columns.str.replace(" ", "_")
-
-# Link weather station
-df_nearest = pd.read_csv("data/weather_station_mapping.csv")
-
-df = df.merge(
-    df_nearest,
-    left_on=["LATITUDE", "LONGITUDE"],
-    right_on=["LATITUDE_ACCIDENT", "LONGITUDE_ACCIDENT"],
-    how="left",
-    validate="m:1",
-)
-
-df_null_zip = pd.read_csv("data/imputed_zip.csv", dtype={"ZIP_CODE_IMPUTED": "str"})
-
-# Link missing zipcodes (only if lat/lon is present)
-df = df.merge(df_null_zip, on=["LATITUDE", "LONGITUDE"], how="left", validate="m:1")
-
-df["ZIP_CODE"] = np.where(
-    df["ZIP_CODE"].isnull(), df["ZIP_CODE_IMPUTED"], df["ZIP_CODE"]
-)
+Visualization\output\Choropleth_Prediction_Accuracy_By_ZIP.html
+Visualization\output\NYC_Accident_Heatmap_with_Boroughs.html
+Visualization\output\NYC_Accident_Heatmap_with_ZIP.html
+Visualization\output\NYC_Crash_Severity_Choropleth.html
 ```
