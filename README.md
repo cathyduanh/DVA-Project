@@ -9,15 +9,17 @@ Data folder contains all datasets used by the codes.
 
 The primary dataset, "City of New York Motor Vehicle Collisions," covers data from 2014 and is updated daily. Due to file size limitations, please refer to the Installation section for instructions on downloading and saving the dataset.
 
-The weather data source: https://www.climate.gov/maps-data/dataset/past-weather-zip-code-data-table. 
-Filename: climate.gov
-NY weather data description: GHCND_documentation.pdf
+The weather data source: https://www.climate.gov/maps-data/dataset/past-weather-zip-code-data-table
+
+Filenames: `data/NY Weather 20xx-20xx.csv` (climate.gov)
+
+NY weather data description: `data/GHCND_documentation.pdf`
 
 # Installation
 - Download the NYC dataset here: 
     https://data.cityofnewyork.us/Public-Safety/Motor-Vehicle-Collisions-Crashes/h9gi-nx95/about_data
 - Save `Motor_Vehicle_Collisions_-_Crashes.csv` under the `data` folder.
-- This package uses Python and Jupyter Notebook. Please ensure both are installed before running the code.
+- This package uses Python and Jupyter Notebook. Please ensure both are installed before running the code via conda below:
 
 ## Building and using environment
 To create environment, run `conda env create -f builds/environment.yml` at the root directory and then activating it via `conda activate dva`.
