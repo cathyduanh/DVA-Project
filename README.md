@@ -1,20 +1,23 @@
-# DVA-Project: NYC Collision Analysis Team 169
-# Description (WIP)
-This package reads in the NYC Collision dataset and imputes zipcodes, adds weather information, and creates predictive models with fatal crashes as the target variable.
+# DVA-Project: Analyzing New York’s Motor Vehicle Collision Data to Identify Key Factors in Fatal Crashes (Team 169, CSE6242 Spring 2025)
+# Description 
+Fatal vehicle collisions impose a major burden on NYC. Traditional methods often overlook key factors like time, weather, and location. This project leverages them to help traffic authorities anticipate high-risk scenarios and allocate resources more effectively, which will improve road safety city-wide.
 
-Weather data source is found here:
-https://www.climate.gov/maps-data/dataset/past-weather-zip-code-data-table
+This package processes the NYC Collision dataset by imputing missing zip codes, integrating weather data, conducting spatial analyses such as heat maps, and building predictive models with fatal crashes as the target variable.
 
+# Data:
+Data folder contains all datasets used by the codes.
+
+The primary dataset, "City of New York Motor Vehicle Collisions," covers data from 2014 and is updated daily. Due to file size limitations, please refer to the Installation section for instructions on downloading and saving the dataset.
+
+The weather data source: https://www.climate.gov/maps-data/dataset/past-weather-zip-code-data-table. 
 Filename: climate.gov
-
 NY weather data description: GHCND_documentation.pdf
 
 # Installation
 - Download the NYC dataset here: 
-    
-        https://data.cityofnewyork.us/Public-Safety/Motor-Vehicle-Collisions-Crashes/h9gi-nx95/about_data
-
+    https://data.cityofnewyork.us/Public-Safety/Motor-Vehicle-Collisions-Crashes/h9gi-nx95/about_data
 - Save `Motor_Vehicle_Collisions_-_Crashes.csv` under the `data` folder.
+- This package uses Python and Jupyter Notebook. Please ensure both are installed before running the code.
 
 ## Building and using environment
 To create environment, run `conda env create -f builds/environment.yml` at the root directory and then activating it via `conda activate dva`.
